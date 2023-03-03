@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapGeneration : MonoBehaviour
 {
-    public enum DrawMode {NoiseMap,ColourMap,Mesh};
+    public enum DrawMode {NoiseMap,ColourMap,Mesh,FalloffMap};
     public DrawMode drawMode;
     const int mapChunkSize = 241;
     [Range(0,6)]
@@ -15,12 +15,18 @@ public class MapGeneration : MonoBehaviour
     public float persistance;
     public float lacinarity;
 
+    public bool useFalloff;
+    float[,]falloffMap;
     public int seed;
     public Vector2 offset;
     public float meshHeightMultip;
     public AnimationCurve meshHeightCurve;
     public bool autoUpdate;
     public TerrainType[] regions;
+    private void Awake()
+    {
+        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
+    }
     public void MapGenerator()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize,mapChunkSize,seed,noiseSize,octaves,persistance,lacinarity,offset);
@@ -30,6 +36,10 @@ public class MapGeneration : MonoBehaviour
         {
             for(int x =0; x<mapChunkSize; x++)
             {
+                if (useFalloff)
+                {
+                    noiseMap[x,y]=Mathf.Clamp01(noiseMap[x, y]-falloffMap[x, y]);
+                }
                 float currentHeight = noiseMap[x,y];
                 for (int i = 0; i < regions.Length; i++)
                 {
@@ -55,7 +65,12 @@ public class MapGeneration : MonoBehaviour
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap,meshHeightMultip,meshHeightCurve,levelOfDetail),TextureGen.TextureFromColourMap(colorMap,mapChunkSize,mapChunkSize));
 
         }
+        else if (drawMode == DrawMode.FalloffMap)
+        {
+            display.DrawTexture(TextureGen.TextureFromHeightMap(FalloffGen.GenerateFalloffMap(mapChunkSize)));
+        }
     }
+
     void OnValidate()
     {
         if (lacinarity < 1)
@@ -66,6 +81,8 @@ public class MapGeneration : MonoBehaviour
         {
             octaves = 0;
         }
+        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
+
     }
 }
 [System.Serializable]
