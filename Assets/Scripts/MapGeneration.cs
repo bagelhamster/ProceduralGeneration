@@ -26,6 +26,12 @@ public class MapGeneration : MonoBehaviour
     private void Awake()
     {
         falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
+        MapGenerator();
+    }
+    private void Start()
+    {
+
+
     }
     public void MapGenerator()
     {
@@ -70,6 +76,7 @@ public class MapGeneration : MonoBehaviour
             display.DrawTexture(TextureGen.TextureFromHeightMap(FalloffGen.GenerateFalloffMap(mapChunkSize)));
         }
     }
+
 
     void OnValidate()
     {

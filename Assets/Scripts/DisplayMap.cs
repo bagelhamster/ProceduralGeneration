@@ -9,6 +9,7 @@ public class DisplayMap : MonoBehaviour
     public MeshRenderer meshRenderer;
     public void DrawTexture(Texture2D texture)
     {
+     
         renderTexture.sharedMaterial.mainTexture = texture;
         renderTexture.transform.localScale = new Vector3(texture.width, 1, texture.height);
     }
