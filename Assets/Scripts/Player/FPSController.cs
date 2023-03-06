@@ -92,7 +92,7 @@ public class FPSController : MonoBehaviour
             MouseLook();
             FinalMove();
             Jump();
-            Crouch();
+            //Crouch();
             HeadBob();
             touching();
         }

@@ -25,6 +25,7 @@ public class MapGeneration : MonoBehaviour
     public TerrainType[] regions;
     private void Awake()
     {
+        seed = Random.Range(-10000, 10000);
         falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
         MapGenerator();
     }
