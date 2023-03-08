@@ -9,26 +9,33 @@ public class MapGeneration : MonoBehaviour
     const int mapChunkSize = 241;
     [Range(0,6)]
     public int levelOfDetail;
-    public float noiseSize;
-    public int octaves;
-    [Range(0,1)]
-    public float persistance;
-    public float lacinarity;
+    public TextureData textureData;
+    public Material terrainMaterial;
 
-    public bool useFalloff;
     float[,]falloffMap;
-    public int seed;
-    public Vector2 offset;
-    public float meshHeightMultip;
-    public AnimationCurve meshHeightCurve;
+    public TerrainData terrainData;
+    public NoiseData noiseData;
+
     public bool autoUpdate;
     public TerrainType[] regions;
     private void Awake()
     {
-        seed = Random.Range(-10000, 10000);
-        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
+        noiseData.seed = Random.Range(-10000, 10000);
+        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize+2);
         MapGenerator();
     }
+    void OnValuesUpdated()
+    {
+        if (!Application.isPlaying)
+        {
+            MapGenerator();
+        }
+    }
+   /* void OnTextureValuesUpdated()
+    {
+        textureData.ApplyToMaterial(terrainMaterial);
+
+    }*/
     private void Start()
     {
 
@@ -36,14 +43,14 @@ public class MapGeneration : MonoBehaviour
     }
     public void MapGenerator()
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize,mapChunkSize,seed,noiseSize,octaves,persistance,lacinarity,offset);
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize,mapChunkSize,noiseData.seed,noiseData.noiseSize,noiseData.octaves,noiseData.persistance,noiseData.lacinarity,noiseData.offset);
 
         Color[] colorMap = new Color[mapChunkSize * mapChunkSize];
         for(int y = 0; y < mapChunkSize; y++)
         {
             for(int x =0; x<mapChunkSize; x++)
             {
-                if (useFalloff)
+                if (terrainData.useFalloff)
                 {
                     noiseMap[x,y]=Mathf.Clamp01(noiseMap[x, y]-falloffMap[x, y]);
                 }
@@ -55,7 +62,8 @@ public class MapGeneration : MonoBehaviour
                         colorMap[y * mapChunkSize + x] = regions[i].color;
                         break;
                     }
-                }
+                }        
+
             }
         }
         DisplayMap display=FindObjectOfType<DisplayMap>();
@@ -69,29 +77,39 @@ public class MapGeneration : MonoBehaviour
         }
         else if (drawMode == DrawMode.Mesh)
         {
-            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap,meshHeightMultip,meshHeightCurve,levelOfDetail),TextureGen.TextureFromColourMap(colorMap,mapChunkSize,mapChunkSize));
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap,terrainData.meshHeightMultip,terrainData.meshHeightCurve,levelOfDetail),TextureGen.TextureFromColourMap(colorMap,mapChunkSize,mapChunkSize));
 
         }
         else if (drawMode == DrawMode.FalloffMap)
         {
             display.DrawTexture(TextureGen.TextureFromHeightMap(FalloffGen.GenerateFalloffMap(mapChunkSize)));
-        }
+        }                textureData.UpdateMeshHeights(terrainMaterial,terrainData.minHeight,terrainData.maxHeight);
+
     }
 
-
-    void OnValidate()
+    private void OnValidate()
     {
-        if (lacinarity < 1)
+        if(terrainData != null)
         {
-            lacinarity = 1;
-        }
-        if (octaves < 0)
-        {
-            octaves = 0;
-        }
-        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize);
+            terrainData.OnValuesUpdated -= OnValuesUpdated;
 
+            terrainData.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (noiseData != null)
+        {
+            noiseData.OnValuesUpdated -= OnValuesUpdated;
+
+            noiseData.OnValuesUpdated += OnValuesUpdated;
+        }
+        falloffMap = FalloffGen.GenerateFalloffMap(mapChunkSize+2);
+        if (textureData != null)
+        {
+            textureData.OnValuesUpdated -= OnValuesUpdated;
+
+            textureData.OnValuesUpdated += OnValuesUpdated;
+        }
     }
+
 }
 [System.Serializable]
 public struct TerrainType
