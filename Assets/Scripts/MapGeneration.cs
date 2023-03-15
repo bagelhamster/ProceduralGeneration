@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Mesh;
 
 public class MapGeneration : MonoBehaviour
 {
     public enum DrawMode {NoiseMap,ColourMap,Mesh,FalloffMap};
     public DrawMode drawMode;
-    const int mapChunkSize = 241;
+    public const int mapChunkSize = 241;
     [Range(0,6)]
     public int levelOfDetail;
     public TextureData textureData;
@@ -15,7 +16,7 @@ public class MapGeneration : MonoBehaviour
     float[,]falloffMap;
     public TerrainData terrainData;
     public NoiseData noiseData;
-
+    public float lastNoiseHeight;
     public bool autoUpdate;
     public TerrainType[] regions;
     private void Awake()
@@ -41,6 +42,7 @@ public class MapGeneration : MonoBehaviour
 
 
     }
+
     public void MapGenerator()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize,mapChunkSize,noiseData.seed,noiseData.noiseSize,noiseData.octaves,noiseData.persistance,noiseData.lacinarity,noiseData.offset);
@@ -78,6 +80,7 @@ public class MapGeneration : MonoBehaviour
         else if (drawMode == DrawMode.Mesh)
         {
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap,terrainData.meshHeightMultip,terrainData.meshHeightCurve,levelOfDetail),TextureGen.TextureFromColourMap(colorMap,mapChunkSize,mapChunkSize));
+
 
         }
         else if (drawMode == DrawMode.FalloffMap)

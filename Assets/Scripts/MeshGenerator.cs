@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Mesh;
 
-public static class MeshGenerator 
+public static class MeshGenerator
 {
     public static MeshData GenerateTerrainMesh(float[,] heightMap,float heightMultip,AnimationCurve heightCurve,int levelOfDetail)
     {
@@ -32,10 +33,13 @@ public static class MeshGenerator
             }
         }
         return meshData;
+
+
     }
 }
 public class MeshData
 {
+
     public Vector3[] vertices;
     public int[] triangles;
     public Vector2[] uvs;
@@ -53,13 +57,23 @@ public class MeshData
         triangles[triangleIndex+2] = c;
         triangleIndex += 3;
     }
+
     public Mesh CreateMesh()
     {
+
         Mesh mesh = new Mesh();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
         mesh.RecalculateNormals();
+        
         return mesh;
+
+           
+            
+        
     }
 }
+
+
+
