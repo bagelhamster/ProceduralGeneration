@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2340482}
   - component: {fileID: 3579070744821634577}
   - component: {fileID: 9035830837768895046}
+  - component: {fileID: 5371919902223412095}
   - component: {fileID: 5111158954452754735}
   m_Layer: 0
   m_Name: Oak_Tree
@@ -116,6 +117,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &5371919902223412095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ae4a075ebcd7a44a02a41e6428f0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interval: 2
 --- !u!75 &5111158954452754735
 ConstantForce:
   m_ObjectHideFlags: 0
