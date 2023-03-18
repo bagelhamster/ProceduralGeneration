@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8203932074013095119}
   - component: {fileID: 7115762358776572186}
   - component: {fileID: 6672759351305894488}
-  - component: {fileID: 2682413633903500172}
+  - component: {fileID: 8980798146179773175}
   m_Layer: 0
   m_Name: Rock Type6 02
   m_TagString: Rock
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interval: 2
---- !u!65 &2682413633903500172
+--- !u!65 &8980798146179773175
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +140,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5732976, y: 0.91058457, z: 0.6796646}
-  m_Center: {x: -0.2617557, y: 1.04159, z: -0.39159495}
+  m_Size: {x: 0.4523859, y: 0.50007534, z: 0.5282235}
+  m_Center: {x: -0.38765794, y: 1.1298705, z: -0.27616853}
 --- !u!1 &7791976585977180894
 GameObject:
   m_ObjectHideFlags: 0

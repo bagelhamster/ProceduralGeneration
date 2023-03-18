@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 public class Updatable : ScriptableObject
 {
     public event System.Action OnValuesUpdated;
@@ -10,13 +11,13 @@ public class Updatable : ScriptableObject
     {
         if (autoUpdate)
         {
-            UnityEditor.EditorApplication.update += NotifyOfUpdatedValues;
+            //EditorApplication.update += NotifyOfUpdatedValues;
         }
     }
 
     public void NotifyOfUpdatedValues()
     {
-        UnityEditor.EditorApplication.update -= NotifyOfUpdatedValues;
+        //EditorApplication.update -= NotifyOfUpdatedValues;
         if (OnValuesUpdated != null)
         {
             OnValuesUpdated();
