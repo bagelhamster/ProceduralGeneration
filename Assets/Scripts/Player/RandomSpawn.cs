@@ -8,6 +8,7 @@ public class RandomSpawn : MonoBehaviour
     public float interval;
     public GameObject cam;
     public GameObject TreeBreak;
+    public GameObject RockBreak;
     void Update()
     {
         if (interval > 0)
@@ -25,6 +26,7 @@ public class RandomSpawn : MonoBehaviour
             cam.gameObject.SetActive(false);
             Time.timeScale = 1;
             TreeBreak.gameObject.SetActive(true);
+            RockBreak.gameObject.SetActive(true);
 
 
         }
@@ -38,6 +40,7 @@ public class RandomSpawn : MonoBehaviour
         Instantiate(Egg,randomEgg,Quaternion.identity);
             cam.gameObject.SetActive(true);
             TreeBreak.gameObject.SetActive(false);
+            RockBreak.gameObject.SetActive(false);
 
         }
 
